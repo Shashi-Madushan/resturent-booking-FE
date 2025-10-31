@@ -5,3 +5,4 @@ export const ROUTE_DASHBOARD = "/";
 export const ROUTE_LOGIN = "/login";
 export const ROUTE_REGISTER = "/register";
 export const SITE_LINK = window.location.origin;
+export const BASE_PATH = "api";
