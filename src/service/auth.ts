@@ -1,4 +1,6 @@
 import ApiService from './apiService';
+import Cookies from "js-cookie";
+import * as constant from "../configs/constant";
 import type {
   apiObject,
   ApiResponse,
@@ -31,5 +33,15 @@ export async function signinUser(credentials: SigninRequest): Promise<ApiRespons
     basePath: BASE_PATH,
     type: 'AUTH',
   };
-  return await ApiService.callApi(apiObject) as Promise<ApiResponse<AuthResult>>;
+  
+  const response = await ApiService.callApi(apiObject) as ApiResponse<AuthResult>;
+
+  if (response.success) {
+    const token = response.data?.token || response.result;
+    if (token) {
+      Cookies.set(constant.ACCESS_TOKEN, token);
+    }
+  }
+  
+  return response;
 }
