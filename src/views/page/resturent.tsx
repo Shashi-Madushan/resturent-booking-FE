@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { listRestaurants } from "../../service/restaurants";
 import type { Restaurant } from "../../types/types";
 import Logo from "../../assets/logo.png";
 import apiConfig from "../../service/apiConfig.ts";
 
-const Restaurant = () => {
+const RestaurantPage = () => {
+    const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -12,7 +14,7 @@ const Restaurant = () => {
     const [page, setPage] = useState<number>(0);
     const [size, setSize] = useState<number>(6);
     const [totalPages, setTotalPages] = useState<number>(0);
-    const [totalElements, setTotalElements] = useState<number>(0)
+    const [totalElements, setTotalElements] = useState<number>(0);
 
     const fetchRestaurants = async () => {
         try {
@@ -189,6 +191,7 @@ const Restaurant = () => {
                                 return (
                                     <div
                                         key={restaurant.id}
+                                        onClick={() => navigate(`/restaurant/${restaurant.id}`)}
                                         className="group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
                                     >
                                         <div className="relative h-64 overflow-hidden">
@@ -296,4 +299,4 @@ const Restaurant = () => {
     );
 };
 
-export default Restaurant;
+export default RestaurantPage
