@@ -55,8 +55,8 @@ export async function createRestaurant(payload: RestaurantPayload): Promise<ApiR
 }
 
 export async function updateRestaurant(
-  restaurantId: string,
-  payload: RestaurantPayload,
+    restaurantId: string,
+    payload: RestaurantPayload,
 ): Promise<ApiResponse<Restaurant>> {
   const apiObject: apiObject = {
     method: 'PUT',
