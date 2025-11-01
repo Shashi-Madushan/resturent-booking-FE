@@ -57,11 +57,21 @@ async function callApi(apiObject:apiObject) {
       response = await (axios as any)[method](url, body, config);
     }
 
-    const data = response?.data ?? {};
+    const payload = response?.data ?? {};
     const statusCode = response?.status ?? 0;
-    const desc = data.desc ?? data.result ?? data.message ?? '';
-    const success = typeof data.success === 'boolean' ? data.success : statusCode < 400;
-    result = { success, ...data, desc, status: statusCode };
+    const desc = (payload as any)?.desc ?? (payload as any)?.result ?? (payload as any)?.message ?? '';
+    const success = typeof (payload as any)?.success === 'boolean' ? (payload as any)?.success : statusCode < 400;
+    // Normalise so callers can always read `response.data`, even if backend omits it
+    const normalizedData = (payload && typeof payload === 'object' && 'data' in payload)
+      ? (payload as any).data
+      : payload;
+    result = {
+      success,
+      ...payload,
+      desc,
+      status: statusCode,
+      data: normalizedData,
+    };
   } catch (error: any) {
     // Network/timeout (no response)
     if (!error || !error.response) {

@@ -24,7 +24,7 @@ function buildRestaurantFormData(payload: RestaurantPayload): FormData {
 export async function listRestaurants(params?: RestaurantQuery): Promise<ApiResponse<Page<Restaurant>>> {
   const apiObject: apiObject = {
     method: 'GET',
-    authentication: false,
+    authentication: true,
     endpoint: RESOURCE,
     basePath: BASE_PATH,
     params: sanitizeParams(params),

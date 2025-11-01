@@ -4,7 +4,6 @@ import * as constant from "../configs/constant";
 import type {
   apiObject,
   ApiResponse,
-  AuthResult,
   SigninRequest,
   SigninResponse,
   SignupRequest,
@@ -34,10 +33,13 @@ export async function signinUser(credentials: SigninRequest): Promise<ApiRespons
     type: 'AUTH',
   };
   
-  const response = await ApiService.callApi(apiObject) as ApiResponse<AuthResult>;
+  const response = await ApiService.callApi(apiObject) as ApiResponse<SigninResponse>;
 
   if (response.success) {
-    const token = response.data?.token || response.result;
+  // Extract token from normalised response payload
+  console.log("response data",response.data);
+  const tokenCandidate = response.data?.token ?? (response as Record<string, unknown>)?.token;
+  const token = typeof tokenCandidate === 'string' ? tokenCandidate : undefined;
     if (token) {
       Cookies.set(constant.ACCESS_TOKEN, token);
     }

@@ -1,5 +1,5 @@
-export const ACCESS_TOKEN = "elephant.admin.access";
-export const ADMIN_ID = "elephant.admin.id";
+export const ACCESS_TOKEN = "resturent.user.access";
+export const USER_ID = "resturent.user.id";
 export const BASE_ROUTE_PATH = "";
 export const ROUTE_DASHBOARD = "/";
 export const ROUTE_LOGIN = "/login";
