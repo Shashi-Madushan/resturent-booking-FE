@@ -96,6 +96,15 @@ export interface UpdateUserRequest {
 
 export type Uploadable = File | Blob;
 
+export interface OpenHours {
+  id: number;
+  dayOfWeek: string;
+  openingTime: string;
+  closingTime: string;
+  restaurantId: number | null;
+  closed: boolean;
+}
+
 export interface Restaurant {
   id: string;
   name: string;
@@ -106,6 +115,7 @@ export interface Restaurant {
   capacity?: number;
   active?: boolean;
   imageUrl?: string;
+  openHours?: OpenHours[];
   createdAt?: string;
   updatedAt?: string;
   [key: string]: unknown;
