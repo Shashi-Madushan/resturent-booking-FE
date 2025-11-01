@@ -194,7 +194,7 @@ const RestaurantDetail = () => {
                                 <img
                                     src={imageUrl}
                                     alt={restaurant.name}
-                                    className="w-full h-auto aspect-[4/3] object-cover"
+                                    className="w-full h-auto aspect-4/3 object-cover"
                                     />
                             </div>
                         </div>
@@ -207,7 +207,7 @@ const RestaurantDetail = () => {
                             <h2 className="text-4xl md:text-4xl font-bold text-gray-900">{restaurant.name}</h2>
                             <button
                                 onClick={toggleFavorite}
-                                className="ml-4 p-3 rounded-full hover:bg-gray-100 transition flex-shrink-0"
+                                className="ml-4 p-3 rounded-full hover:bg-gray-100 transition shrink-0"
                                 aria-label="Add to favorites"
                             >
                                 <svg
