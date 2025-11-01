@@ -1,6 +1,71 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import SignUpImage from "../../../assets/signUp.png";
+import { signupUser } from "../../../service/auth";
+import type { SignupRequest } from "../../../types/types";
 
 function SignUp() {
+    const [formData, setFormData] = useState<SignupRequest>({
+        name: "",
+        email: "",
+        password: "",
+    });
+    const [termsAccepted, setTermsAccepted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+        // Clear error when user starts typing
+        if (error) setError(null);
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        // Validation
+        if (!formData.name.trim()) {
+            setError("Please enter your name");
+            return;
+        }
+        if (!formData.email.trim()) {
+            setError("Please enter your email");
+            return;
+        }
+        if (!formData.password.trim()) {
+            setError("Please enter your password");
+            return;
+        }
+        if (!termsAccepted) {
+            setError("Please accept the terms and policy");
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await signupUser(formData);
+            
+            if (response.success) {
+                setSuccess(true);
+                // Reset form
+                setFormData({ name: "", email: "", password: "" });
+                setTermsAccepted(false);
+            } else {
+                setError(response.desc || "Sign up failed. Please try again.");
+            }
+        } catch (err) {
+            setError("Network error. Please check your connection and try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <div className="min-h-screen flex">
 
@@ -12,7 +77,19 @@ function SignUp() {
                         Get Started Now
                     </h2>
 
-                    <form className="space-y-5">
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                            {error}
+                        </div>
+                    )}
+
+                    {success && (
+                        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                            Account created successfully! You can now sign in.
+                        </div>
+                    )}
+
+                    <form className="space-y-5" onSubmit={handleSubmit}>
                         {/* Name Field */}
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -21,8 +98,11 @@ function SignUp() {
                             <input
                                 type="text"
                                 id="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
                                 className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-black focus:border-black sm:text-sm"
                                 placeholder="Enter your name"
+                                required
                             />
                         </div>
 
@@ -34,8 +114,11 @@ function SignUp() {
                             <input
                                 type="email"
                                 id="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
                                 className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-black focus:border-black sm:text-sm"
                                 placeholder="Enter your email"
+                                required
                             />
                         </div>
 
@@ -47,8 +130,11 @@ function SignUp() {
                             <input
                                 type="password"
                                 id="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
                                 className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-black focus:border-black sm:text-sm"
                                 placeholder="••••••"
+                                required
                             />
                         </div>
 
@@ -57,6 +143,8 @@ function SignUp() {
                             <input
                                 id="terms"
                                 type="checkbox"
+                                checked={termsAccepted}
+                                onChange={(e) => setTermsAccepted(e.target.checked)}
                                 className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
                             />
                             <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
@@ -70,9 +158,14 @@ function SignUp() {
                         {/* Sign Up Button */}
                         <button
                             type="submit"
-                            className="w-full py-3 px-4 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+                            disabled={loading}
+                            className={`w-full py-3 px-4 rounded-lg font-medium transition ${
+                                loading 
+                                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
+                                    : 'bg-black text-white hover:bg-gray-800'
+                            }`}
                         >
-                            Sign Up
+                            {loading ? 'Creating Account...' : 'Sign Up'}
                         </button>
                     </form>
 
@@ -104,9 +197,9 @@ function SignUp() {
                     {/* Sign In Link */}
                     <p className="mt-8 text-center text-sm text-gray-600">
                         Have an account?{" "}
-                        <a href="#" className="font-medium text-blue-600 hover:text-blue-800">
+                        <Link to="/signin" className="font-medium text-blue-600 hover:text-blue-800">
                             Sign In
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>
