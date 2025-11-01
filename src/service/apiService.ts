@@ -58,8 +58,10 @@ async function callApi(apiObject:apiObject) {
     }
 
     const data = response?.data ?? {};
-    const desc = data.desc ?? data.result ?? '';
-    result = { ...data, desc, status: response?.status ?? 0 };
+    const statusCode = response?.status ?? 0;
+    const desc = data.desc ?? data.result ?? data.message ?? '';
+    const success = typeof data.success === 'boolean' ? data.success : statusCode < 400;
+    result = { success, ...data, desc, status: statusCode };
   } catch (error: any) {
     // Network/timeout (no response)
     if (!error || !error.response) {

@@ -61,7 +61,7 @@ instance.interceptors.response.use(
 
     try {
       const res = await axios.post(URL, {}, config);
-      const newToken = res.data?.result;
+      const newToken = res.data?.token ?? res.data?.result;
       if (!newToken) throw new Error('No token returned from refresh');
 
       Cookies.set(constant.ACCESS_TOKEN, newToken);
