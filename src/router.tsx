@@ -6,6 +6,7 @@ import HomePage from "./views/page/homePage.tsx";
 */
 import RestaurantDetail from "./views/page/restaurantDetail.tsx";
 import RestaurantPage from "./views/page/resturent.tsx";
+import RestaurantMenu from "./views/page/menu/restaurantMenu.tsx";
 
 
 const router = createBrowserRouter([
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     {
         path: "/restaurant/:id",
         element: <RestaurantDetail />
+    },
+    {
+        path: "/restaurant/:id/menu",
+        element: <RestaurantMenu />
     },
     {
         path: "/signin",

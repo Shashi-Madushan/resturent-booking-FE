@@ -146,6 +146,7 @@ export interface MenuItem {
   itemName: string;
   price: number;
   description?: string;
+  category?: string;
   available?: boolean;
   restaurantId: string;
   imageUrl?: string;
@@ -158,6 +159,7 @@ export interface MenuItemMutation {
   itemName?: string;
   price?: number;
   description?: string;
+  category?: string;
   available?: boolean;
   restaurantId?: string;
 }

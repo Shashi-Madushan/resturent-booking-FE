@@ -60,6 +60,12 @@ const RestaurantDetail = () => {
         setIsFavorite(!isFavorite);
     };
 
+    const handleViewMenu = () => {
+        if (id) {
+            navigate(`/restaurant/${id}/menu`);
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -238,7 +244,10 @@ const RestaurantDetail = () => {
                             <button className="flex-1 bg-green-500 text-white py-4 rounded-xl text-lg font-bold hover:bg-green-600 transition shadow-lg transform hover:scale-105">
                                 Book a Table
                             </button>
-                            <button className="flex-1 bg-orange-500 text-white py-4 rounded-xl text-lg font-bold hover:bg-orange-600 transition shadow-lg transform hover:scale-105">
+                            <button
+                                onClick={handleViewMenu}
+                                className="flex-1 bg-orange-500 text-white py-4 rounded-xl text-lg font-bold hover:bg-orange-600 transition shadow-lg transform hover:scale-105"
+                            >
                                 View Menu
                             </button>
                         </div>

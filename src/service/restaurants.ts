@@ -35,7 +35,7 @@ export async function listRestaurants(params?: RestaurantQuery): Promise<ApiResp
 export async function getRestaurantById(restaurantId: string): Promise<ApiResponse<Restaurant>> {
   const apiObject: apiObject = {
     method: 'GET',
-    authentication: false,
+    authentication: true,
     endpoint: `${RESOURCE}/${restaurantId}`,
     basePath: BASE_PATH,
   };

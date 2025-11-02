@@ -36,7 +36,7 @@ export async function listMenuItems(
 ): Promise<ApiResponse<Page<MenuItem>>> {
   const apiObject: apiObject = {
     method: 'GET',
-    authentication: false,
+    authentication: true,
     endpoint: `restaurants/${restaurantId}/menu-items`,
     basePath: BASE_PATH,
     params: sanitizeParams(params),
